@@ -22,7 +22,7 @@ function getStockLabel(quantity) {
   return 'Healthy'
 }
 
-function ProductsTab({ products, onEdit, onDelete }) {
+function ProductsTab({ products, onEdit, onDelete, loading }) {
   const inventoryUnits = products.reduce((total, product) => total + product.quantity_in_stock, 0)
   const inventoryValue = products.reduce(
     (total, product) => total + product.price * product.quantity_in_stock,
@@ -35,15 +35,15 @@ function ProductsTab({ products, onEdit, onDelete }) {
         <PanelCard title="Catalog" subtitle="">
           <div className="mini-stats">
             <div>
-              <strong>{products.length}</strong>
+              <strong>{loading ? '...' : products.length}</strong>
               <span>Total products</span>
             </div>
             <div>
-              <strong>{inventoryUnits}</strong>
+              <strong>{loading ? '...' : inventoryUnits}</strong>
               <span>Units in stock</span>
             </div>
             <div>
-              <strong>{formatCurrency(inventoryValue)}</strong>
+              <strong>{loading ? '...' : formatCurrency(inventoryValue)}</strong>
               <span>Inventory value</span>
             </div>
           </div>
@@ -52,15 +52,15 @@ function ProductsTab({ products, onEdit, onDelete }) {
         <PanelCard title="Stock Health" subtitle="">
           <div className="mini-stats">
             <div>
-              <strong>{products.filter((product) => product.quantity_in_stock > 5).length}</strong>
+              <strong>{loading ? '...' : products.filter((product) => product.quantity_in_stock > 5).length}</strong>
               <span>Healthy</span>
             </div>
             <div>
-              <strong>{products.filter((product) => product.quantity_in_stock > 0 && product.quantity_in_stock <= 5).length}</strong>
+              <strong>{loading ? '...' : products.filter((product) => product.quantity_in_stock > 0 && product.quantity_in_stock <= 5).length}</strong>
               <span>Low stock</span>
             </div>
             <div>
-              <strong>{products.filter((product) => product.quantity_in_stock === 0).length}</strong>
+              <strong>{loading ? '...' : products.filter((product) => product.quantity_in_stock === 0).length}</strong>
               <span>Out of stock</span>
             </div>
           </div>
@@ -81,7 +81,15 @@ function ProductsTab({ products, onEdit, onDelete }) {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {loading
+                ? [...Array(3)].map((_, index) => (
+                    <tr key={`loading-product-${index}`}>
+                      <td colSpan="6">
+                        <div className="skeleton-line skeleton-row" />
+                      </td>
+                    </tr>
+                  ))
+                : products.map((product) => (
                 <tr key={product.id}>
                   <td>{product.name}</td>
                   <td>{product.sku}</td>
@@ -104,7 +112,7 @@ function ProductsTab({ products, onEdit, onDelete }) {
               ))}
             </tbody>
           </table>
-          {!products.length ? <p className="empty-state">No products created yet.</p> : null}
+          {!loading && !products.length ? <p className="empty-state">No products created yet.</p> : null}
         </div>
       </PanelCard>
     </div>

@@ -361,6 +361,7 @@ function App() {
       return (
         <ProductsTab
           products={products}
+          loading={loading}
           onEdit={(product) => openProductDrawer(product)}
           onDelete={(id) => handleDelete(`/products/${id}`, 'Product')}
         />
@@ -371,6 +372,7 @@ function App() {
       return (
         <CustomersTab
           customers={customers}
+          loading={loading}
           onDelete={(id) => handleDelete(`/customers/${id}`, 'Customer')}
         />
       )
@@ -380,6 +382,7 @@ function App() {
       return (
         <OrdersTab
           orders={orders}
+          loading={loading}
           selectedOrder={selectedOrder}
           onSelectOrder={setSelectedOrder}
           onDeleteOrder={(id) => handleDelete(`/orders/${id}`, 'Order')}
@@ -392,6 +395,7 @@ function App() {
         summary={summary}
         products={products}
         orders={orders}
+        loading={loading}
         onOpenProducts={() => setActiveView('products')}
         onOpenOrders={() => setActiveView('orders')}
       />
@@ -415,6 +419,12 @@ function App() {
           onRetry={() => loadData()}
           onClose={() => setFlash({ type: '', message: '' })}
         />
+        {loading ? (
+          <div className="loading-note">
+            <strong>Loading data...</strong>
+            <span>Free-hosted backend services can take a few seconds to wake up.</span>
+          </div>
+        ) : null}
         {renderView()}
       </main>
 

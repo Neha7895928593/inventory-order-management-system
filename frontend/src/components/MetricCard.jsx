@@ -1,9 +1,11 @@
-function MetricCard({ label, value, helper, tone = 'default' }) {
+function MetricCard({ label, value, helper, tone = 'default', loading = false }) {
   return (
     <article className={`metric-card ${tone}`}>
       <span>{label}</span>
-      <strong>{String(value)}</strong>
-      {helper ? <p>{helper}</p> : null}
+      {loading ? <div className="skeleton-line skeleton-value" /> : <strong>{String(value)}</strong>}
+      {helper ? (
+        loading ? <div className="skeleton-line skeleton-helper" /> : <p>{helper}</p>
+      ) : null}
     </article>
   )
 }

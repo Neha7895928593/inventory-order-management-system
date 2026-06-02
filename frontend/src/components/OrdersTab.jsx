@@ -1,13 +1,26 @@
 import PanelCard from './PanelCard'
 import { formatCurrency, formatDate } from '../lib/format'
 
-function OrdersTab({ orders, selectedOrder, onSelectOrder, onDeleteOrder }) {
+function OrdersTab({ orders, selectedOrder, onSelectOrder, onDeleteOrder, loading }) {
   return (
     <div className="view-grid">
       <div className="orders-layout">
         <PanelCard title="Orders" subtitle="">
           <div className="order-list">
-            {orders.map((order) => (
+            {loading
+              ? [...Array(3)].map((_, index) => (
+                  <article className="order-list-item" key={`loading-order-list-${index}`}>
+                    <div className="skeleton-stack">
+                      <div className="skeleton-line skeleton-row" />
+                      <div className="skeleton-line skeleton-helper" />
+                    </div>
+                    <div className="skeleton-stack skeleton-stack-right">
+                      <div className="skeleton-line skeleton-row" />
+                      <div className="skeleton-line skeleton-helper" />
+                    </div>
+                  </article>
+                ))
+              : orders.map((order) => (
               <article
                 key={order.id}
                 className={`order-list-item ${selectedOrder?.id === order.id ? 'active' : ''}`}
@@ -33,7 +46,7 @@ function OrdersTab({ orders, selectedOrder, onSelectOrder, onDeleteOrder }) {
                 </div>
               </article>
             ))}
-            {!orders.length ? <p className="empty-state">No orders created yet.</p> : null}
+            {!loading && !orders.length ? <p className="empty-state">No orders created yet.</p> : null}
           </div>
         </PanelCard>
 
@@ -41,7 +54,33 @@ function OrdersTab({ orders, selectedOrder, onSelectOrder, onDeleteOrder }) {
           title="Order Detail"
           subtitle=""
         >
-          {selectedOrder ? (
+          {loading ? (
+            <div className="order-detail">
+              <div className="detail-summary">
+                <div className="skeleton-stack">
+                  <div className="skeleton-line skeleton-row" />
+                  <div className="skeleton-line skeleton-helper" />
+                </div>
+                <div className="skeleton-stack skeleton-stack-right">
+                  <div className="skeleton-line skeleton-row" />
+                  <div className="skeleton-line skeleton-helper" />
+                </div>
+              </div>
+              <div className="table-shell">
+                <table>
+                  <tbody>
+                    {[...Array(3)].map((_, index) => (
+                      <tr key={`loading-detail-${index}`}>
+                        <td colSpan="4">
+                          <div className="skeleton-line skeleton-row" />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : selectedOrder ? (
             <div className="order-detail">
               <div className="detail-summary">
                 <div>

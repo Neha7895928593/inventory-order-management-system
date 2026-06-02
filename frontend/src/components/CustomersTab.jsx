@@ -1,21 +1,21 @@
 import PanelCard from './PanelCard'
 
-function CustomersTab({ customers, onDelete }) {
+function CustomersTab({ customers, onDelete, loading }) {
   return (
     <div className="view-grid">
       <div className="workspace-summary-grid">
         <PanelCard title="Directory" subtitle="">
           <div className="mini-stats">
             <div>
-              <strong>{customers.length}</strong>
+              <strong>{loading ? '...' : customers.length}</strong>
               <span>Total customers</span>
             </div>
             <div>
-              <strong>{customers.filter((customer) => customer.email).length}</strong>
+              <strong>{loading ? '...' : customers.filter((customer) => customer.email).length}</strong>
               <span>Email captured</span>
             </div>
             <div>
-              <strong>{customers.filter((customer) => customer.phone_number).length}</strong>
+              <strong>{loading ? '...' : customers.filter((customer) => customer.phone_number).length}</strong>
               <span>Phone captured</span>
             </div>
           </div>
@@ -24,15 +24,15 @@ function CustomersTab({ customers, onDelete }) {
         <PanelCard title="Coverage" subtitle="">
           <div className="mini-stats">
             <div>
-              <strong>{customers.filter((customer) => customer.email && customer.phone_number).length}</strong>
+              <strong>{loading ? '...' : customers.filter((customer) => customer.email && customer.phone_number).length}</strong>
               <span>Complete records</span>
             </div>
             <div>
-              <strong>{customers.filter((customer) => customer.email && !customer.phone_number).length}</strong>
+              <strong>{loading ? '...' : customers.filter((customer) => customer.email && !customer.phone_number).length}</strong>
               <span>Missing phone</span>
             </div>
             <div>
-              <strong>{customers.filter((customer) => !customer.email || !customer.phone_number).length}</strong>
+              <strong>{loading ? '...' : customers.filter((customer) => !customer.email || !customer.phone_number).length}</strong>
               <span>Needs review</span>
             </div>
           </div>
@@ -51,7 +51,15 @@ function CustomersTab({ customers, onDelete }) {
               </tr>
             </thead>
             <tbody>
-              {customers.map((customer) => (
+              {loading
+                ? [...Array(3)].map((_, index) => (
+                    <tr key={`loading-customer-${index}`}>
+                      <td colSpan="4">
+                        <div className="skeleton-line skeleton-row" />
+                      </td>
+                    </tr>
+                  ))
+                : customers.map((customer) => (
                 <tr key={customer.id}>
                   <td>{customer.full_name}</td>
                   <td>{customer.email}</td>
@@ -65,7 +73,7 @@ function CustomersTab({ customers, onDelete }) {
               ))}
             </tbody>
           </table>
-          {!customers.length ? <p className="empty-state">No customers created yet.</p> : null}
+          {!loading && !customers.length ? <p className="empty-state">No customers created yet.</p> : null}
         </div>
       </PanelCard>
     </div>
