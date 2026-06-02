@@ -39,6 +39,15 @@ def on_startup() -> None:
     Base.metadata.create_all(bind=engine)
 
 
+@app.get("/")
+def root() -> dict[str, str]:
+    return {
+        "message": "Ethara Inventory API is running.",
+        "docs": "/docs",
+        "health": "/health",
+    }
+
+
 @app.get("/health")
 def healthcheck() -> dict[str, str]:
     return {"status": "ok"}
