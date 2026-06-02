@@ -119,3 +119,11 @@ Recommended deployment flow:
 2. Deploy the FastAPI backend with the required environment variables.
 3. Deploy the React frontend and point `VITE_API_BASE_URL` to the live backend.
 4. Verify API access, dashboard loading, and order creation on the deployed URLs.
+
+## Live Links
+
+- Frontend: `https://inventory-order-management-system-lime.vercel.app`
+- Backend API: `https://inventory-order-management-system-ml0q.onrender.com`
+- API Docs: `https://inventory-order-management-system-ml0q.onrender.com/docs`
+- Docker Hub: `https://hub.docker.com/r/neha35/ethara-inventory-backend`
+- GitHub Repository: `https://github.com/Neha7895928593/inventory-order-management-system`
