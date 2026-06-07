@@ -1,6 +1,4 @@
-const PROD_API_BASE_URL = 'https://inventory-order-management-system-ml0q.onrender.com'
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? PROD_API_BASE_URL : '/api')
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'
 
 export async function apiRequest(path, options = {}) {
   const hasBody =

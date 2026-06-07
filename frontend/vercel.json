@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://inventory-order-management-system-ml0q.onrender.com/:path*"
+    }
+  ]
+}
