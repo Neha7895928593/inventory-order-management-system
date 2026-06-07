@@ -11,7 +11,7 @@ class TimestampMixin:
 
 
 class Product(Base, TimestampMixin):
-    __tablename__ = "products"
+    __tablename__ = "invos_products"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
@@ -21,7 +21,7 @@ class Product(Base, TimestampMixin):
 
 
 class Customer(Base, TimestampMixin):
-    __tablename__ = "customers"
+    __tablename__ = "invos_customers"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     full_name: Mapped[str] = mapped_column(String(255), nullable=False)
@@ -32,10 +32,10 @@ class Customer(Base, TimestampMixin):
 
 
 class Order(Base, TimestampMixin):
-    __tablename__ = "orders"
+    __tablename__ = "invos_orders"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    customer_id: Mapped[int] = mapped_column(ForeignKey("customers.id", ondelete="CASCADE"), nullable=False)
+    customer_id: Mapped[int] = mapped_column(ForeignKey("invos_customers.id", ondelete="CASCADE"), nullable=False)
     total_amount: Mapped[float] = mapped_column(Float, nullable=False)
 
     customer: Mapped["Customer"] = relationship(back_populates="orders")
@@ -47,12 +47,12 @@ class Order(Base, TimestampMixin):
 
 
 class OrderItem(Base):
-    __tablename__ = "order_items"
-    __table_args__ = (UniqueConstraint("order_id", "product_id", name="uq_order_product"),)
+    __tablename__ = "invos_order_items"
+    __table_args__ = (UniqueConstraint("order_id", "product_id", name="uq_invos_order_product"),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    order_id: Mapped[int] = mapped_column(ForeignKey("orders.id", ondelete="CASCADE"), nullable=False)
-    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), nullable=False)
+    order_id: Mapped[int] = mapped_column(ForeignKey("invos_orders.id", ondelete="CASCADE"), nullable=False)
+    product_id: Mapped[int] = mapped_column(ForeignKey("invos_products.id"), nullable=False)
     quantity: Mapped[int] = mapped_column(Integer, nullable=False)
     unit_price: Mapped[float] = mapped_column(Float, nullable=False)
     line_total: Mapped[float] = mapped_column(Float, nullable=False)
